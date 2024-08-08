@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import java.util.concurrent.TimeUnit;
@@ -122,7 +123,7 @@ public class HomePageTest {
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        WebElement searchFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("iframe.nKphmK")));
+        WebElement searchFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6kppi75 > iframe")));
         driver.switchTo().frame(searchFrame);
 
         WebElement SearchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.s-button")));
@@ -154,40 +155,71 @@ public class HomePageTest {
         // Asigurarea că data au fost setata corect
         driver.switchTo().frame(searchFrame);
         String checkInValue =  driver.findElement(By.id("check-in-value")).getText();
-        softAssert.assertTrue(checkInValue.contains(checkInDateLabel.split(",")[0]), "Data de check-in nu a fost setată corect.");
+        softAssert.assertTrue(checkInValue.contains(checkInDateLabel.split(",")[0]), "Check-in date is not correct");
         driver.switchTo().defaultContent();
 
         // Comutare la iframe-ul calendarului de check-out
         WebElement checkOutFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("U73P_q")));
         driver.switchTo().frame(checkOutFrame);
 
-        // Folosirea variabilei checkOutDate pentru a selecta ziua din calendar
-        LocalDate checkOutDate = today.plusDays(3);
-        String checkOutDateLabel = checkOutDate.format(formatter);
+        // Se cauta prima data de check-out disponibila
+        LocalDate nextDate = today.plusDays(1);
+        WebElement availableCheckOutDayButton = null;
 
-        // Construirea dinamică a XPath-ului în funcție de formatul `aria-label`
-        String xpathForCheckOutDate = String.format("//button[@aria-label='%s']", checkOutDateLabel);
+        while (availableCheckOutDayButton == null) {
+            String nextDateLabel = nextDate.format(formatter);
+            try {
+                availableCheckOutDayButton = driver.findElement(By.xpath(
+                        String.format("//button[@aria-label='%s' and not(@disabled)]", nextDateLabel)));
+            } catch (Exception e) {
+                // Dacă nu găsește elementul, trecem la următoarea zi
+                nextDate = nextDate.plusDays(1);
+            }
+        }
 
-        // Selectarea zilei de check-out
-        WebElement checkOutDayButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathForCheckOutDate)));
-        checkOutDayButton.click();
+        // Verific dacă data disponibilă este la o zi după check-in
+        long daysDifference = java.time.temporal.ChronoUnit.DAYS.between(today, nextDate);
+        softAssert.assertEquals(daysDifference, 1,
+                "The first available date for check-out is not a day after the check-in date");
+
+        // Selectează prima data de check-out găsită disponibila
+        availableCheckOutDayButton.click();
 
         driver.switchTo().defaultContent(); // Revenire la contextul principal
 
-        // Asigurarea că datele au fost setate corect
         driver.switchTo().frame(searchFrame);
-        String CheckOutValue = driver.findElement(By.id("check-out-value")).getText();
-        softAssert.assertTrue(CheckOutValue.contains(checkOutDateLabel.split(",")[0]), "Data de check-out nu a fost setată corect.");
-
         WebElement adultsButtonIncr = driver.findElement(By.cssSelector("#adults > .up"));
         adultsButtonIncr.click();
 
+        WebElement childrenButtonIncr = driver.findElement(By.cssSelector("#children > .up"));
+        childrenButtonIncr.click();
 
+        SearchButton.click();
         driver.switchTo().defaultContent(); // Revenire la contextul principal
+
+        // Verificare pagina incarcata
+        String expected_URL = "https://ancabota09.wixsite.com/intern/rooms";
+        String actual_URL = driver.getCurrentUrl();
+        softAssert.assertTrue( actual_URL.contains(expected_URL), "The page is not loaded correctly");
+
+        // Verificare text afisat pe pagina incarcata
+        WebElement roomsPageText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6lwrp17 > p > span")));
+        String roomsPageWrongText = "I'm a paragraph. Click here to add your own text and edit me. It’s easy. " +
+                "Just click “Edit Text” or double click me to add your own content and make changes to the font. " +
+                "Feel free to drag and drop me anywhere you like on your page. " +
+                "I’m a great place for you to tell a story and let your users know a little more about you.";
+
+        softAssert.assertNotEquals(roomsPageText.getText(), roomsPageWrongText, "The text on the page is not suggestive");
+
+        // Verificare butonul Rooms din navbar este evidentiat
+        WebElement roomsButtonNavbar = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("i6kl732v2")));
+        String expected_result = "menu selected  link";
+
+        softAssert.assertEquals(roomsButtonNavbar.getAttribute("data-state"), expected_result, "Rooms button is not highlighted");
 
         softAssert.assertAll();
 
-
     }
+
 
 }
