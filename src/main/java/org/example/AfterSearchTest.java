@@ -84,6 +84,37 @@ public class AfterSearchTest {
 
 
     @Test
+    public void BookNowButtonTest_AllRooms(){
+        SoftAssert softAssert = new SoftAssert();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
+
+        // Comutare catre iframe Book a Room
+        WebElement bookFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6klgqap_0 > iframe")));
+        driver.switchTo().frame(bookFrame);
+
+        // Găsirea tuturor elementelor care reprezintă butoanele "Book Now"
+        List<WebElement> bookNowButtons = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.xpath("//span[contains(text(),'Book Now')]/ancestor::button")));
+
+        // Iterăm prin fiecare buton "Book Now"
+        for (WebElement bookNowButton : bookNowButtons) {
+            // Găsirea titlului camerei părinte
+            WebElement roomTitleElement = bookNowButton.findElement(By.xpath("../../../preceding-sibling::div[@class='description']/h3/a/span"));
+            String roomTitle = roomTitleElement.getText();
+            System.out.println("Verificare pentru camera: " + roomTitle);
+
+            bookNowButton.click();
+
+            // Verificarea că URL-ul s-a schimbat corespunzător
+            String expectedURL = "https://ancabota09.wixsite.com/intern/booknow";
+            String actualURL = driver.getCurrentUrl();
+            softAssert.assertEquals(actualURL, expectedURL, "Pagina destinată nu s-a deschis corect pentru camera: " + roomTitle);
+
+        }
+
+        softAssert.assertAll();
+    }
+
+    @Test
     public void BookNowButtonTest_StandardSuite(){
 
         SoftAssert softAssert = new SoftAssert();
