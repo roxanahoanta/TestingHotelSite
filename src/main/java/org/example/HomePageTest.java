@@ -39,96 +39,137 @@ public class HomePageTest {
 
     @Test
     public void verifyBookNowButton() {
-
-//        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        SoftAssert softAssert = new SoftAssert();
 
         WebElement bookNowButton = driver.findElement(By.className("wixui-button__label"));
-
-        Assert.assertTrue(bookNowButton.isDisplayed());
+        softAssert.assertTrue(bookNowButton.isDisplayed(), "Book Now button is not displayed");
 
         bookNowButton.click();
 
         String expected_URL = "https://ancabota09.wixsite.com/intern/booknow";
         String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Book Now page is not loading");
 
-        Assert.assertEquals(actual_URL, expected_URL, "Book Now page is not loading");
-
-        //String text = search_button.getAttribute("value");
-
+        softAssert.assertAll();
     }
 
     @Test
     public void verifyExploreButton(){
+        SoftAssert softAssert = new SoftAssert();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         WebElement ExploreButton = driver.findElement(By.id("i6kl732v1label"));
-
-        Assert.assertTrue(ExploreButton.isDisplayed());
+        softAssert.assertTrue(ExploreButton.isDisplayed(), "Explore button is not displayed");
 
         ExploreButton.click();
 
         String expected_URL = "https://ancabota09.wixsite.com/intern/explore";
         String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Explore page is not loading");
 
-        Assert.assertEquals(actual_URL, expected_URL, "Explore page is not loading");
+        // Verificare text afisat pe pagina incarcata
+        WebElement explorePageText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6kvh3dl > p > span")));
+        String explorePageWrongText = "I'm a paragraph. Click here to add your own text and edit me. It’s easy. " +
+                "Just click “Edit Text” or double click me to add your own content and make changes to the font. " +
+                "Feel free to drag and drop me anywhere you like on your page. " +
+                "I’m a great place for you to tell a story and let your users know a little more about you.";
+        softAssert.assertNotEquals(explorePageText.getText(), explorePageWrongText, "The text on the page is not suggestive");
+
+        softAssert.assertAll();
     }
 
     @Test
     public void verifyRoomsButton(){
+        SoftAssert softAssert = new SoftAssert();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
-        WebElement RoomsButton = driver.findElement(By.id("i6kl732v2label"));
+        WebElement roomsButton = driver.findElement(By.id("i6kl732v2label"));
+        softAssert.assertTrue(roomsButton.isDisplayed(), "The Rooms Button is not displayed.");
 
-        Assert.assertTrue(RoomsButton.isDisplayed(), "The Book Now button is not displayed.");
-
-        RoomsButton.click();
+        roomsButton.click();
 
         String expected_URL = "https://ancabota09.wixsite.com/intern/rooms";
         String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Rooms page is not loading");
 
-        Assert.assertEquals(actual_URL, expected_URL, "Rooms page is not loading");
+        // Verificare text afisat pe pagina incarcata
+        WebElement roomsPageText = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6lwrp17 > p > span")));
+        String roomsPageWrongText = "I'm a paragraph. Click here to add your own text and edit me. It’s easy. " +
+                "Just click “Edit Text” or double click me to add your own content and make changes to the font. " +
+                "Feel free to drag and drop me anywhere you like on your page. " +
+                "I’m a great place for you to tell a story and let your users know a little more about you.";
+        softAssert.assertNotEquals(roomsPageText.getText(), roomsPageWrongText, "The text on the page is not suggestive");
+
+        softAssert.assertAll();
     }
 
     @Test
     public void verifyContactButton(){
+        SoftAssert softAssert = new SoftAssert();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         WebElement ContactButton = driver.findElement(By.id("i6kl732v3label"));
-
-        Assert.assertTrue(ContactButton.isDisplayed());
+        softAssert.assertTrue(ContactButton.isDisplayed(), "Contact button is not displayed");
 
         ContactButton.click();
 
         String expected_URL = "https://ancabota09.wixsite.com/intern/contact";
         String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Rooms page is not loading");
 
-        Assert.assertEquals(actual_URL, expected_URL, "Rooms page is not loading");
+        // Verificare text afisat pe pagina incarcata
+        WebElement contactPageText1 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"i6ly3ckc_0\"]/p[1]")));
+        WebElement contactPageText2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id=\"i6ly3ckc_0\"]/p[2]")));
+        String contactPageCorrectText1 = "If you have any questions, please contact us by telephone or email and we'll get back to you as soon as possible.";
+        String contactPageCorrectText2 = "We look forward to hearing from you.";
+        softAssert.assertEquals(contactPageText1.getText(), contactPageCorrectText1, "The text on the page is not suggestive");
+        softAssert.assertEquals(contactPageText2.getText(), contactPageCorrectText2, "The text on the page is not suggestive");
+
+        softAssert.assertAll();
     }
 
     @Test
     public void verifyHomeButton(){
+        SoftAssert softAssert = new SoftAssert();
 
         WebElement HomeButton = driver.findElement(By.id("i6kl732v0label"));
-
-        Assert.assertTrue(HomeButton.isDisplayed());
+        softAssert.assertTrue(HomeButton.isDisplayed(), "Home Button is not displayed");
 
         HomeButton.click();
 
         String expected_URL = "https://ancabota09.wixsite.com/intern";
         String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Home page is not loading");
 
-        Assert.assertEquals(actual_URL, expected_URL, "Home page is not loading");
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void verifyHomeAndAwayButton(){
+        SoftAssert softAssert = new SoftAssert();
+
+        WebElement HomeAndAwayButton = driver.findElement(By.cssSelector("#i6ksxrtk > h1 > a"));
+        softAssert.assertTrue(HomeAndAwayButton.isDisplayed(), "Home And Away Button is not displayed");
+
+        HomeAndAwayButton.click();
+
+        String expected_URL = "https://ancabota09.wixsite.com/intern";
+        String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Home page is not loading");
+
+        softAssert.assertAll();
     }
 
     @Test
     public  void verifySearchButton(){
         SoftAssert softAssert = new SoftAssert();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
         WebElement searchFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6kppi75 > iframe")));
         driver.switchTo().frame(searchFrame);
 
         WebElement SearchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.s-button")));
-
-        softAssert.assertTrue(SearchButton.isDisplayed());
+        softAssert.assertTrue(SearchButton.isDisplayed(), "Search Button is not displayed");
 
         WebElement checkInButton = driver.findElement(By.id("check-in"));
         checkInButton.click();
@@ -185,7 +226,7 @@ public class HomePageTest {
         // Selectează prima data de check-out găsită disponibila
         availableCheckOutDayButton.click();
 
-        driver.switchTo().defaultContent(); // Revenire la contextul principal
+        driver.switchTo().defaultContent();
 
         driver.switchTo().frame(searchFrame);
         WebElement adultsButtonIncr = driver.findElement(By.cssSelector("#adults > .up"));
@@ -195,7 +236,7 @@ public class HomePageTest {
         childrenButtonIncr.click();
 
         SearchButton.click();
-        driver.switchTo().defaultContent(); // Revenire la contextul principal
+        driver.switchTo().defaultContent();
 
         // Verificare pagina incarcata
         String expected_URL = "https://ancabota09.wixsite.com/intern/rooms";

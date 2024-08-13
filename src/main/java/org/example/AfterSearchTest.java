@@ -45,14 +45,12 @@ public class AfterSearchTest {
         LocalDate checkInDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d, EEEE MMMM yyyy", Locale.ENGLISH);
         String checkInDateLabel = checkInDate.format(formatter);
-
-        // Construirea XPath-ului în funcție de formatul `aria-label`
         String xpathForCheckInDate = String.format("//button[@aria-label='%s']", checkInDateLabel);
 
         // Selectarea zilei de check-in
         WebElement checkInDayButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathForCheckInDate)));
         checkInDayButton.click();
-        driver.switchTo().defaultContent(); // Revenire la conținutul principal
+        driver.switchTo().defaultContent();
 
         // Comutare la iframe-ul calendarului de check-out
         WebElement checkOutFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("U73P_q")));
@@ -61,20 +59,18 @@ public class AfterSearchTest {
         // Folosirea variabilei checkOutDate pentru a selecta ziua din calendar
         LocalDate checkOutDate = checkInDate.plusDays(3);
         String checkOutDateLabel = checkOutDate.format(formatter);
-
-        // Construirea XPath-ului în funcție de formatul `aria-label`
         String xpathForCheckOutDate = String.format("//button[@aria-label='%s']", checkOutDateLabel);
 
         // Selectarea zilei de check-out
         WebElement checkOutDayButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpathForCheckOutDate)));
         checkOutDayButton.click();
-        driver.switchTo().defaultContent(); // Revenire la conținutul principal
+        driver.switchTo().defaultContent();
 
         // Click buton Search
         driver.switchTo().frame(searchFrame);
         WebElement SearchButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.s-button")));
         SearchButton.click();
-        driver.switchTo().defaultContent(); // Revenire la contextul principal
+        driver.switchTo().defaultContent();
     }
 
     @AfterClass
@@ -108,7 +104,6 @@ public class AfterSearchTest {
             String expectedURL = "https://ancabota09.wixsite.com/intern/booknow";
             String actualURL = driver.getCurrentUrl();
             softAssert.assertEquals(actualURL, expectedURL, "Pagina destinată nu s-a deschis corect pentru camera: " + roomTitle);
-
         }
 
         softAssert.assertAll();
@@ -116,9 +111,7 @@ public class AfterSearchTest {
 
     @Test
     public void BookNowButtonTest_StandardSuite(){
-
         SoftAssert softAssert = new SoftAssert();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         // Comutare catre iframe Book a Room
@@ -141,7 +134,6 @@ public class AfterSearchTest {
     @Test
     public void BookNowButtonTest_Cottage(){
         SoftAssert softAssert = new SoftAssert();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         // Comutare catre iframe Book a Room
@@ -164,7 +156,6 @@ public class AfterSearchTest {
     @Test
     public void BookNowButtonTest_ClassicApp(){
         SoftAssert softAssert = new SoftAssert();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         // Comutare catre iframe Book a Room
@@ -187,7 +178,6 @@ public class AfterSearchTest {
     @Test
     public void ClearButtonTest(){
         SoftAssert softAssert = new SoftAssert();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         // Comutare catre iframe Book a Room
@@ -226,7 +216,6 @@ public class AfterSearchTest {
     @Test
     public void SearchAgainButtonTest(){
         SoftAssert softAssert = new SoftAssert();
-
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         // Comutare catre iframe Book a Room
@@ -252,8 +241,6 @@ public class AfterSearchTest {
         // Găsirea si selectarea zilei corespunzătoare în calendarul activ
         WebElement checkInDay = activeCalendar.findElement(By.xpath(String.format(".//button[@aria-label='%s']", checkInDateLabel)));
         checkInDay.click();
-
-
 
         // Se cauta prima data de check-out disponibila
         LocalDate nextDate = checkInDate.plusDays(1);

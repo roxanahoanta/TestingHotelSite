@@ -1,10 +1,8 @@
 package org.example;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.ElementClickInterceptedException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterClass;
@@ -46,7 +44,7 @@ public class ClassicAppPageTest {
     }
 
     @Test
-    public void BackButtonTest(){
+    public void BackButtonTest() throws InterruptedException {
 
         SoftAssert softAssert = new SoftAssert();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
@@ -54,10 +52,15 @@ public class ClassicAppPageTest {
         WebElement bookFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6klgqap_0 > iframe")));
         driver.switchTo().frame(bookFrame);
 
+        // Scroll up
+        Actions at = new Actions(driver);
+        at.sendKeys(Keys.PAGE_UP).build().perform();
+
         WebElement backButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("button.room-back")));
 
         // Verificare botonul este afisat
         softAssert.assertTrue(backButton.isDisplayed(), "Back Button is not displayed");
+
         backButton.click();
         driver.switchTo().defaultContent();
 

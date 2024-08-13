@@ -27,13 +27,11 @@ public class StandardSuitePageTest {
         driver.get("https://ancabota09.wixsite.com/intern/rooms");
         driver.manage().window().maximize();
 
-        SoftAssert softAssert = new SoftAssert();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(60));
 
         WebElement bookFrame = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#i6klgqap_0 > iframe")));
         driver.switchTo().frame(bookFrame);
 
-//        WebElement roomTitle =wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("a[stranslate=\"Standard Suite\"]")));
         WebElement moreInfoButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#content > div > div.content-body > div > ul > li:nth-child(1) > div > div.info > div.bottom > button > span")));
 
         moreInfoButton.click();
