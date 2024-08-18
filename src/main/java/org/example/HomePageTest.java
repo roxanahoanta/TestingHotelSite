@@ -2,20 +2,14 @@ package org.example;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
-import java.util.concurrent.TimeUnit;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -262,5 +256,114 @@ public class HomePageTest {
 
     }
 
+    @Test
+    public void verifyFacebookButton(){
+        SoftAssert softAssert = new SoftAssert();
+
+        WebElement facebookButton = driver.findElement(By.id("i0odz-i6rlbitx"));
+        softAssert.assertTrue(facebookButton.isDisplayed(), "Facebook Button is not displayed");
+
+        facebookButton.click();
+
+        String originalWindowHandle = driver.getWindowHandle();
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
+
+        String expected_URL = "https://www.facebook.com/wix";
+        String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Facebook page is not loading");
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void verifyTwitterButton(){
+        SoftAssert softAssert = new SoftAssert();
+
+        WebElement twitterButton = driver.findElement(By.id("i220sc-i6rlbitx"));
+        softAssert.assertTrue(twitterButton.isDisplayed(), "Twitter Button is not displayed");
+
+        twitterButton.click();
+
+        String originalWindowHandle = driver.getWindowHandle();
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
+
+        String expected_URL = "https://x.com/wix";
+        String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Twitter page is not loading");
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void verifyPinterestButton(){
+        SoftAssert softAssert = new SoftAssert();
+
+        WebElement pinterestButton = driver.findElement(By.id("i3175p-i6rlbitx"));
+        softAssert.assertTrue(pinterestButton.isDisplayed(), "Pinterest Button is not displayed");
+
+        pinterestButton.click();
+
+        String originalWindowHandle = driver.getWindowHandle();
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
+
+        String expected_URL = "https://www.pinterest.com/wixcom/";
+        String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Pinterest page is not loading");
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void verifyWixButton(){
+        SoftAssert softAssert = new SoftAssert();
+
+        WebElement wixButton = driver.findElement(By.linkText("Wix.com"));
+        softAssert.assertTrue(wixButton.isDisplayed(), "Wix Button is not displayed");
+
+        wixButton.click();
+
+        String originalWindowHandle = driver.getWindowHandle();
+        for (String windowHandle : driver.getWindowHandles()) {
+            if (!windowHandle.equals(originalWindowHandle)) {
+                driver.switchTo().window(windowHandle);
+                break;
+            }
+        }
+
+        String expected_URL = "https://www.wix.com/?utm_campaign=vir_created_with";
+        String actual_URL = driver.getCurrentUrl();
+        softAssert.assertEquals(actual_URL, expected_URL, "Wix page is not loading");
+
+        softAssert.assertAll();
+    }
+
+    @Test
+    public void verifyMailToButton(){
+        SoftAssert softAssert = new SoftAssert();
+
+        WebElement mailToButton = driver.findElement(By.linkText("info@mysite.com"));
+        softAssert.assertTrue(mailToButton.isDisplayed(), "Mail To Button is not displayed");
+
+        String expected_href = "mailto:info@mysite.com";
+        String actual_href = mailToButton.getAttribute("href");
+        softAssert.assertEquals(actual_href, expected_href, "Mail to page is not loading");
+
+        softAssert.assertAll();
+    }
 
 }
