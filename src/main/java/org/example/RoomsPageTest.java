@@ -6,9 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
@@ -20,14 +18,14 @@ import java.util.Locale;
 public class RoomsPageTest {
     private WebDriver driver;
 
-    @BeforeClass
+    @BeforeMethod
     public void beforeClass() {
         driver = new ChromeDriver();
         driver.get("https://ancabota09.wixsite.com/intern/rooms");
         driver.manage().window().maximize();
     }
 
-    @AfterClass
+    @AfterMethod
     public void afterClass() {
         driver.quit();
     }
@@ -51,14 +49,14 @@ public class RoomsPageTest {
             // Găsirea titlului camerei părinte
             WebElement roomTitleElement = moreInfoButton.findElement(By.xpath("../preceding-sibling::div[@class='description']/h3/a/span"));
             String roomTitle = roomTitleElement.getText();
-            System.out.println("Verificare pentru camera: " + roomTitle);
+//            System.out.println("Checking the room: " + roomTitle);
 
             moreInfoButton.click();
 
             // Verificarea că URL-ul s-a schimbat corespunzător
             String expectedURL = "https://ancabota09.wixsite.com/intern/rooms";
             String actualURL = driver.getCurrentUrl();
-            softAssert.assertTrue(actualURL.contains(expectedURL), "Pagina destinată nu s-a deschis corect pentru camera: " + roomTitle);
+            softAssert.assertTrue(actualURL.contains(expectedURL), "The intended page did not open correctly for room: " + roomTitle);
         }
         softAssert.assertAll();
     }
@@ -78,14 +76,14 @@ public class RoomsPageTest {
         // Iterăm prin fiecare titlu de cameră
         for (WebElement roomTitle : roomTitles) {
             String titleText = roomTitle.getText();
-            System.out.println("Verificare pentru camera: " + titleText);
+//            System.out.println("Verificare pentru camera: " + titleText);
 
             roomTitle.click();
 
             // Verificarea că URL-ul s-a schimbat corespunzător
             String expectedURL = ("https://ancabota09.wixsite.com/intern/rooms");
             String actualURL = driver.getCurrentUrl();
-            softAssert.assertTrue(actualURL.contains(expectedURL), "Pagina destinată nu s-a deschis corect pentru camera: " + titleText);
+            softAssert.assertTrue(actualURL.contains(expectedURL), "The intended page did not open correctly for room: " + titleText);
         }
 
         softAssert.assertAll();

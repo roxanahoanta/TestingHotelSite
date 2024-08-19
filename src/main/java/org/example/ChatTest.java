@@ -6,9 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
@@ -17,14 +15,14 @@ import java.util.List;
 public class ChatTest {
     private WebDriver driver;
 
-    @BeforeClass
+    @BeforeMethod
     public void beforeClass() {
         driver = new ChromeDriver();
         driver.get("https://ancabota09.wixsite.com/intern");
         driver.manage().window().maximize();
     }
 
-    @AfterClass
+    @AfterMethod
     public void afterClass() {
         driver.quit();
     }
@@ -99,7 +97,7 @@ public class ChatTest {
 
         //Se verifica primirea unui raspuns de la robot prin numarul elementelor "message-list-item" din "message-list"
         List<WebElement> listItems = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div[data-hook=\"message-list-item\"]")));
-        softAssert.assertEquals(listItems.size(), 3, "Nu s-a primit un raspuns de la robot");
+        softAssert.assertEquals(listItems.size(), 3, "No response was received from the robot for the first message");
 
         softAssert.assertAll();
     }
@@ -139,7 +137,7 @@ public class ChatTest {
 
         //Se verifica primirea unui raspuns de la robot prin numarul elementelor "message-list-item" din "message-list"
         List<WebElement> listItems = wait.until(ExpectedConditions.visibilityOfAllElementsLocatedBy(By.cssSelector("div[data-hook=\"message-list-item\"]")));
-        softAssert.assertEquals(listItems.size(), 5, "Nu s-a primit un raspuns de la robot pentru al doilea mesaj");
+        softAssert.assertEquals(listItems.size(), 5, "No response was received from the robot for the second message");
 
         softAssert.assertAll();
     }

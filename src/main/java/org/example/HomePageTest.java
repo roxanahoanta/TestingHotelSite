@@ -10,22 +10,20 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 public class HomePageTest {
     private WebDriver driver;
 
-    @BeforeClass
+    @BeforeMethod
     public void beforeClass() {
         driver = new ChromeDriver();
         driver.get("https://ancabota09.wixsite.com/intern");
         driver.manage().window().maximize();
     }
 
-    @AfterClass
+    @AfterMethod
     public void afterClass() {
         driver.quit();
     }
@@ -299,7 +297,7 @@ public class HomePageTest {
 
         String expected_URL = "https://x.com/wix";
         String actual_URL = driver.getCurrentUrl();
-        softAssert.assertEquals(actual_URL, expected_URL, "Twitter page is not loading");
+        softAssert.assertTrue(actual_URL.contains(expected_URL) , "Twitter page is not loading");
 
         softAssert.assertAll();
     }

@@ -7,9 +7,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
 import java.time.Duration;
@@ -21,7 +19,7 @@ import java.util.Locale;
 public class AfterSearchTest {
     private WebDriver driver;
 
-    @BeforeClass
+    @BeforeMethod
     public void beforeClass() {
         driver = new ChromeDriver();
         driver.get("https://ancabota09.wixsite.com/intern");
@@ -73,7 +71,7 @@ public class AfterSearchTest {
         driver.switchTo().defaultContent();
     }
 
-    @AfterClass
+    @AfterMethod
     public void afterClass() {
         driver.quit();
     }
@@ -126,7 +124,7 @@ public class AfterSearchTest {
         //Verificare URL
         String expected_URL = "https://ancabota09.wixsite.com/intern/booknow";
         String actual_URL = driver.getCurrentUrl();
-        softAssert.assertEquals(actual_URL, expected_URL, "Book Now page is not loading");
+        softAssert.assertEquals(actual_URL, expected_URL, "Book Now page for Standard Suite room is not loading");
 
         softAssert.assertAll();
     }
@@ -148,7 +146,7 @@ public class AfterSearchTest {
         //Verificare URL
         String expected_URL = "https://ancabota09.wixsite.com/intern/booknow";
         String actual_URL = driver.getCurrentUrl();
-        softAssert.assertEquals(actual_URL, expected_URL, "Book Now page is not loading");
+        softAssert.assertEquals(actual_URL, expected_URL, "Book Now page for Cottage room is not loading");
 
         softAssert.assertAll();
     }
@@ -170,7 +168,7 @@ public class AfterSearchTest {
         //Verificare URL
         String expected_URL = "https://ancabota09.wixsite.com/intern/booknow";
         String actual_URL = driver.getCurrentUrl();
-        softAssert.assertEquals(actual_URL, expected_URL, "Book Now page is not loading");
+        softAssert.assertEquals(actual_URL, expected_URL, "Book Now page for Classic App room is not loading");
 
         softAssert.assertAll();
     }
